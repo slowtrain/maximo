@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/EAM/EAM.iml" filepath="$PROJECT_DIR$/EAM/EAM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MAM/MAM.iml" filepath="$PROJECT_DIR$/MAM/MAM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MAXIMO.iml" filepath="$PROJECT_DIR$/MAXIMO.iml" />
+    </modules>
+  </component>
+</project>
