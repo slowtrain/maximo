@@ -7,10 +7,6 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-
-
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,10 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".asset.AssetListActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".login.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".init.InitActivity"
+            android:label="Init"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,23 +27,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".asset.AssetActivity"
-            android:label="@string/asset_name"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".asset.AssetListActivity"
+            android:label="@string/title_activity_asset"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".workorder.WorkorderActivity"
-            android:label="@string/wo_name"
-            android:launchMode="singleTask"
+            android:name=".asset.AssetActivity"
+            android:label="@string/title_activity_asset"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".workorder.WorkorderListActivity"
-            android:label="@string/wo_name"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_workorder"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".login.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:name=".workorder.WorkorderActivity"
+            android:label="@string/title_activity_workorder"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

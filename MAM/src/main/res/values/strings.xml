@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">MAM</string>
-    <string name="wo_name">WORKORDER</string>
+    <string name="app_name">Mobile EAM</string>
     <string name="asset_name">ASSET</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -21,11 +20,15 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="prompt_person">PersonID</string>
+    <string name="title_activity_asset">설비</string>
+    <string name="title_activity_workorder">작업오더</string>
 
-
-
-
-
+    <string name="maximo_protocol">http</string>
+    <string name="maximo_url">172.30.1.2</string>
+    <string name="maximo_port">7001</string>
+    <string name="maximo_user">maxadmin</string>
+    <string name="maximo_password">maxadmin</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_asset_list">AssetListActivity</string>
 
 </resources>

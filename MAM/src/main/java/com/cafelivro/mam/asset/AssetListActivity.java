@@ -2,106 +2,209 @@ package com.cafelivro.mam.asset;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cafelivro.mam.BasicActivity;
 import com.cafelivro.mam.R;
+import com.cafelivro.mam.workorder.WorkorderListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by baeks on 8/22/2016.
- */
+public class AssetListActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-public class AssetListActivity extends BasicActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addView(R.id.content_basic,R.layout.content_asset_list);
+        setContentView(R.layout.activity_asset_list);
+
+        setUp();
 
         List<Map<String,Object>> assetSet = new ArrayList<Map<String,Object>>();
 
-        for(int i =1;i<10;i++){
+        for(int i =1;i<101;i++){
             Map<String,Object> asset = new HashMap<String,Object>();
-            asset.put("wonum","test00"+i);
+            asset.put("assetnum","test00"+i);
             asset.put("description","desc00"+i);
             asset.put("location","location00"+i);
+            asset.put("siteid","CAFE");
             assetSet.add(asset);
         }
 
-//        ArrayAdapter<String> adp= new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,asset);
-//        ListView list = (ListView)findViewById(R.id.content_asset_list_list);
-//        list.setAdapter(adp);
-//        list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//        list.setDivider(new ColorDrawable(Color.DKGRAY));
-//        list.setDividerHeight(2);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.content_asset_list);
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this,assetSet));
 
 
-        ListView assetListView = (ListView)findViewById(R.id.content_asset_list_list);
-        ArrayAdapter assetListadp = new AssetListAdapter(this,R.layout.list_asset,R.id.content_asset_list_list,assetSet);
-
-        assetListView.setAdapter(assetListadp);
 
     }
 
+    private void setUp(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-    public class AssetListAdapter extends ArrayAdapter<Map<String,Object>> {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.default_menu, menu);
+        return true;
+    }
 
-        Context context = null;
-        int layoutResourceId = 0;
-        int textViewResourceId = 0;
-        List<Map<String,Object>> assetSet;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-        public AssetListAdapter(Context context, int layoutResourceId, int textViewResourceId, List<Map<String,Object>> assetSet) {
-            super(context, layoutResourceId, textViewResourceId, assetSet);
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
-            this.context = context;
-            this.layoutResourceId = layoutResourceId;
-            this.textViewResourceId = textViewResourceId;
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_asset) {
+            Intent intent = new Intent(this, AssetListActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_workorder) {
+            Intent intent = new Intent(this, WorkorderListActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+
+
+        List<Map<String, Object>> assetSet;
+        Map<String, Object> currentAsset;
+        Context context;
+
+
+        public SimpleItemRecyclerViewAdapter(Context context, List<Map<String, Object>> assetSet) {
             this.assetSet = assetSet;
+            this.context = context;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LinearLayout layoutAssetList = null;
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_asset, parent, false);
+            return new ViewHolder(view);
+        }
 
-            if (null != convertView) {
-                layoutAssetList = (LinearLayout) convertView;
-            }else {
-                LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                layoutAssetList = (LinearLayout) layoutInflater.inflate(layoutResourceId, null);
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+            currentAsset = assetSet.get(position);
+
+            holder.assetnum.setText((String) currentAsset.get("assetnum"));
+            holder.description.setText((String) currentAsset.get("description"));
+            holder.location.setText((String) currentAsset.get("location"));
+            holder.siteid.setText((String) currentAsset.get("siteid"));
+
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+
+                    Intent intent = new Intent(context, AssetActivity.class);
+                    intent.putExtra("assetnum", (String) currentAsset.get("assetnum"));
+                    intent.putExtra("description", (String) currentAsset.get("description"));
+                    intent.putExtra("location", (String) currentAsset.get("location"));
+                    intent.putExtra("siteid", (String) currentAsset.get("siteid"));
+                    context.startActivity(intent);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return assetSet.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            public final View mView;
+            public final TextView assetnum;
+            public final TextView description;
+            public final TextView location;
+            public final TextView siteid;
+
+
+            public ViewHolder(View view) {
+                super(view);
+                mView = view;
+                assetnum = (TextView) view.findViewById(R.id.assetnum);
+                description = (TextView) view.findViewById(R.id.description);
+                location = (TextView) view.findViewById(R.id.location);
+                siteid = (TextView) view.findViewById(R.id.siteid);
             }
-            TextView wonum = (TextView)layoutAssetList.findViewById(R.id.wonum);
-            TextView description = (TextView)layoutAssetList.findViewById(R.id.description);
-            TextView location = (TextView)layoutAssetList.findViewById(R.id.location);
-            Map<String,Object> currentAsset = assetSet.get(position);
 
-            wonum.setText((String)currentAsset.get("wonum"));
-            description.setText((String)currentAsset.get("description"));
-            location.setText((String)currentAsset.get("location"));
-
-            return (View)layoutAssetList;
+            @Override
+            public String toString() {
+                return super.toString() + " '" + description.getText() + "'";
             }
+        }
     }
-
-
-
 }

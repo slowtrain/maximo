@@ -1,1 +1,1 @@
-include ':EAM', ':MAM'
+include ':MAM'

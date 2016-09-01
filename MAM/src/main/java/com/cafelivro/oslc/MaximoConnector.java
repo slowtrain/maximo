@@ -1,7 +1,9 @@
 package com.cafelivro.oslc;
 
+import android.content.Context;
 import android.util.Base64;
 
+import com.cafelivro.mam.R;
 import com.ibm.json.java.JSONObject;
 
 import java.io.BufferedReader;
@@ -12,7 +14,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HTTPToMaximo {
+public class MaximoConnector {
 
 
     public static final String HTTP_METHOD_POST = "POST";
@@ -28,17 +30,18 @@ public class HTTPToMaximo {
     private String basicUri;
     private String maxauth;
 
-    public HTTPToMaximo(String basicUri, String user, String password) {
-        this.basicUri=basicUri;
 
+    public MaximoConnector(Context context) {
+        String protocol = context.getString(R.string.maximo_protocol);
+        String url = context.getString(R.string.maximo_url);
+        String port = context.getString(R.string.maximo_port);
+        String user = context.getString(R.string.maximo_user);
+        String password = context.getString(R.string.maximo_password);
+
+        this.basicUri=protocol+"://"+url+":"+port+"/maximo/oslc/os";;
         this.maxauth=Base64.encodeToString(new String(user+":"+password).getBytes(),Base64.URL_SAFE);
     }
 
-    public HTTPToMaximo(String protocol, String host, String port , String user, String password) {
-        String basicUri=protocol+"://"+host+":"+port+"/maximo/oslc/os";
-        this.basicUri=basicUri;
-        this.maxauth=Base64.encodeToString(new String(user+":"+password).getBytes(),Base64.URL_SAFE);
-    }
 
     public String getBasicUri(){
         return basicUri;
