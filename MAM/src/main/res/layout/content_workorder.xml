@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_asset"
+    android:id="@+id/content_workorder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -14,39 +14,39 @@
     tools:showIn="@layout/activity_workorder">
 
     <TextView
-        android:text="assetnum"
+        android:text="wonum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginStart="31dp"
         android:layout_marginTop="42dp"
-        android:id="@+id/assetnum" />
+        android:id="@+id/wonum" />
 
     <TextView
         android:text="description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/assetnum"
-        android:layout_alignStart="@+id/assetnum"
+        android:layout_below="@+id/wonum"
+        android:layout_alignStart="@+id/wonum"
         android:layout_marginTop="25dp"
         android:id="@+id/description" />
 
     <TextView
-        android:text="location"
+        android:text="assetnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/description"
         android:layout_alignStart="@+id/description"
         android:layout_marginTop="35dp"
-        android:id="@+id/location" />
+        android:id="@+id/assetnum" />
 
     <TextView
         android:text="siteid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/location"
-        android:layout_alignStart="@+id/location"
+        android:layout_below="@+id/assetnum"
+        android:layout_alignStart="@+id/assetnum"
         android:layout_marginTop="33dp"
         android:id="@+id/siteid" />
 </RelativeLayout>

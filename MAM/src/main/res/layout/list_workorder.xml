@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width= "match_parent"
     android:layout_height= "wrap_content"
-    android:layout_marginBottom= "4dp"
+    android:layout_marginBottom= "2dp"
     android:orientation= "vertical"
     android:background="@color/colorList"
     android:padding= "4dp" >
@@ -13,11 +13,11 @@
         android:orientation="horizontal"
         >
         <TextView
-            android:id= "@+id/assetnum"
+            android:id= "@+id/wonum"
             android:layout_width= "match_parent"
             android:layout_height= "wrap_content"
             android:layout_weight= "1"
-            android:text= "assetnum"
+            android:text= "wonum"
             android:textSize= "14sp" />
 
         <TextView
@@ -39,11 +39,11 @@
         >
 
         <TextView
-            android:id= "@+id/location"
+            android:id= "@+id/assetnum"
             android:layout_width= "match_parent"
             android:layout_height= "wrap_content"
             android:layout_weight= "1"
-            android:text= "location"
+            android:text= "assetnum"
             android:textSize= "14sp" />
 
     </LinearLayout>

@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +20,7 @@
             android:label="@string/title_activity_login" />
         <activity
             android:name=".init.InitActivity"
-            android:label="Init"
+            android:label="EAM"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,19 +31,36 @@
         <activity
             android:name=".asset.AssetListActivity"
             android:label="@string/title_activity_asset"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".asset.AssetActivity"
             android:label="@string/title_activity_asset"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".workorder.WorkorderListActivity"
             android:label="@string/title_activity_workorder"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".workorder.WorkorderActivity"
             android:label="@string/title_activity_workorder"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".location.LocationListActivity"
+            android:label="@string/title_activity_location"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".location.LocationActivity"
+            android:label="@string/title_activity_location"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
+        <activity android:name=".setting.SettingActivity"
+            android:launchMode="singleTask"
+            android:label="@string/title_activity_setting"
+            ></activity>
     </application>
 
 </manifest>

@@ -2,6 +2,9 @@ package com.cafelivro.mam.asset;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,15 +23,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cafelivro.mam.R;
-import com.cafelivro.mam.workorder.WorkorderListActivity;
+import com.cafelivro.mam.location.LocationListActivity;
+import com.cafelivro.mam.setting.SettingActivity;
+import com.cafelivro.mam.workorder.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AssetListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class AssetListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    public SimpleItemRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +43,9 @@ public class AssetListActivity extends AppCompatActivity
 
         setUp();
 
-        List<Map<String,Object>> assetSet = new ArrayList<Map<String,Object>>();
-
-        for(int i =1;i<101;i++){
-            Map<String,Object> asset = new HashMap<String,Object>();
-            asset.put("assetnum","test00"+i);
-            asset.put("description","desc00"+i);
-            asset.put("location","location00"+i);
-            asset.put("siteid","CAFE");
-            assetSet.add(asset);
-        }
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.content_asset_list);
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this,assetSet));
-
-
+        adapter = new SimpleItemRecyclerViewAdapter(this);
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this));
 
     }
 
@@ -92,7 +86,7 @@ public class AssetListActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.default_menu, menu);
+        getMenuInflater().inflate(R.menu.asset_menu, menu);
         return true;
     }
 
@@ -104,7 +98,9 @@ public class AssetListActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_download) {
+            DownLoadAsyncTask downloadAsyncTask = new DownLoadAsyncTask(this);
+            downloadAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             return true;
         }
 
@@ -117,16 +113,17 @@ public class AssetListActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_asset) {
-            Intent intent = new Intent(this, AssetListActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_workorder) {
+        if (id == R.id.nav_workorder) {
             Intent intent = new Intent(this, WorkorderListActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_asset) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_location) {
+            Intent intent = new Intent(this, LocationListActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_setting) {
+            Intent intent = new Intent(this, SettingActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -138,15 +135,34 @@ public class AssetListActivity extends AppCompatActivity
     public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
 
-        List<Map<String, Object>> assetSet;
-        Map<String, Object> currentAsset;
+        List<Map<String, Object>> dataSet;
         Context context;
 
 
-        public SimpleItemRecyclerViewAdapter(Context context, List<Map<String, Object>> assetSet) {
-            this.assetSet = assetSet;
+        public SimpleItemRecyclerViewAdapter(Context context) {
             this.context = context;
+            setDataSet();
+
         }
+
+        public void setDataSet(){
+            SQLiteDatabase database=context.openOrCreateDatabase(context.getString(R.string.database_name), Context.MODE_PRIVATE,null);
+            Cursor cursor=database.rawQuery("select assetnum,siteid,description,location from asset", null);
+
+            this.dataSet = new ArrayList<Map<String,Object>>();
+
+            while(cursor.moveToNext()){
+                Map<String,Object> asset = new HashMap<String,Object>();
+                asset.put("assetnum",cursor.getString(0));
+                asset.put("siteid",cursor.getString(1));
+                asset.put("description",cursor.getString(2));
+                asset.put("location",cursor.getString(3));
+
+                dataSet.add(asset);
+            }
+        }
+
+
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -156,7 +172,7 @@ public class AssetListActivity extends AppCompatActivity
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            currentAsset = assetSet.get(position);
+            Map<String, Object> currentAsset= dataSet.get(position);
 
             holder.assetnum.setText((String) currentAsset.get("assetnum"));
             holder.description.setText((String) currentAsset.get("description"));
@@ -166,13 +182,12 @@ public class AssetListActivity extends AppCompatActivity
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Context context = v.getContext();
 
                     Intent intent = new Intent(context, AssetActivity.class);
-                    intent.putExtra("assetnum", (String) currentAsset.get("assetnum"));
-                    intent.putExtra("description", (String) currentAsset.get("description"));
-                    intent.putExtra("location", (String) currentAsset.get("location"));
-                    intent.putExtra("siteid", (String) currentAsset.get("siteid"));
+                    intent.putExtra("assetnum", holder.assetnum.getText().toString());
+                    intent.putExtra("description", holder.description.getText().toString());
+                    intent.putExtra("location", holder.location.getText().toString());
+                    intent.putExtra("siteid", holder.siteid.getText().toString());
                     context.startActivity(intent);
                 }
             });
@@ -180,7 +195,7 @@ public class AssetListActivity extends AppCompatActivity
 
         @Override
         public int getItemCount() {
-            return assetSet.size();
+            return dataSet.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {

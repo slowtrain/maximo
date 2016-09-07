@@ -1,1 +1,1 @@
-include ':MAM'
+include ':MAM', ':myapplication'

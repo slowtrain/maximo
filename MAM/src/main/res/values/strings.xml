@@ -1,12 +1,28 @@
 <resources>
     <string name="app_name">Mobile EAM</string>
     <string name="asset_name">ASSET</string>
+    <string name="database_name">eam.db</string>
+    <string name="database_table_workorder">workorder</string>
+    <string name="database_table_asset">asset</string>
+    <string name="database_table_location">location</string>
+    <string name="database_table_person">person</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_search">검색</string>
+    <string name="action_add">신규</string>
+    <string name="action_download">다운로드</string>
+    <string name="action_upload">업로드</string>
     <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to setting -->
+    <string name="prompt_url">Maximo call URL</string>
+    <string name="prompt_start_module">Start Module</string>
+    <string name="prompt_person">PersonID</string>
+    <string name="action_setting_save">Save Setting</string>
+    <string name="action_save">SAVE</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -20,15 +36,45 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_asset">설비</string>
-    <string name="title_activity_workorder">작업오더</string>
+    <string name="title_activity_asset">ASSET</string>
+    <string name="title_activity_workorder">WORKORDER</string>
+    <string name="title_activity_location">LOCATION</string>
 
     <string name="maximo_protocol">http</string>
-    <string name="maximo_url">172.30.1.2</string>
+    <string name="maximo_url">192.168.0.38</string>
     <string name="maximo_port">7001</string>
     <string name="maximo_user">maxadmin</string>
     <string name="maximo_password">maxadmin</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_asset_list">AssetListActivity</string>
+    <string name="start_module">workorder</string>
+    <string name="title_activity_setting">SettingActivity</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+    <string name="title_activity_basic">BasicActivity</string>
+
 
 </resources>

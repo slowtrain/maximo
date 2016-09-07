@@ -43,8 +43,11 @@ public class AssetActivity extends AppCompatActivity {
     }
 
 
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     private void setUp(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -71,6 +74,7 @@ public class AssetActivity extends AppCompatActivity {
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
             navigateUpTo(new Intent(this, AssetListActivity.class));
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

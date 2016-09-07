@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MAM/MAM.iml" filepath="$PROJECT_DIR$/MAM/MAM.iml" />
       <module fileurl="file://$PROJECT_DIR$/MAXIMO.iml" filepath="$PROJECT_DIR$/MAXIMO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/myapplication/myapplication.iml" />
     </modules>
   </component>
 </project>

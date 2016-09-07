@@ -1,49 +1,32 @@
 package com.cafelivro.mam.init;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.cafelivro.mam.R;
 import com.cafelivro.mam.asset.AssetListActivity;
+import com.cafelivro.mam.location.LocationListActivity;
+import com.cafelivro.mam.workorder.WorkorderListActivity;
 
 public class InitActivity extends AppCompatActivity {
+
+    private TextView progressTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
 
-
         getSupportActionBar().hide();
-        InitAsyncTask asyncTask = new InitAsyncTask();
+        InitAsyncTask asyncTask = new InitAsyncTask(this);
         asyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
-
-
-
-
-    class InitAsyncTask extends AsyncTask<Void,Void,Void>{
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Intent intent = new Intent(getApplicationContext(), AssetListActivity.class);
-
-            try {
-                Thread.sleep(5000);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-
-
-
-
-            startActivity(intent);
-            finish();
-            return null;
-        }
-    }
-
-
 
 }

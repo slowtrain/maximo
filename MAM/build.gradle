@@ -29,6 +29,7 @@ dependencies {
     })
     compile "com.android.support:appcompat-v7:${support_lib_version}"
     compile "com.android.support:design:${support_lib_version}"
-    testCompile 'junit:junit:4.12'
     compile files('libs/json4j.jar')
+    compile 'com.android.support:support-v4:24.2.0'
+    testCompile 'junit:junit:4.12'
 }

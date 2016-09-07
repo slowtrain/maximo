@@ -2,6 +2,9 @@ package com.cafelivro.mam.workorder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -12,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +24,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cafelivro.mam.R;
+import com.cafelivro.mam.asset.AssetListActivity;
+import com.cafelivro.mam.location.LocationListActivity;
+import com.cafelivro.mam.setting.SettingActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,31 +35,23 @@ import java.util.Map;
 
 public class WorkorderListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    SimpleItemRecyclerViewAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workorder_list);
-
         setUp();
-
-        List<Map<String,Object>> assetSet = new ArrayList<Map<String,Object>>();
-
-        for(int i =1;i<101;i++){
-            Map<String,Object> asset = new HashMap<String,Object>();
-            asset.put("assetnum","test00"+i);
-            asset.put("description","desc00"+i);
-            asset.put("location","location00"+i);
-            asset.put("siteid","CAFE");
-            assetSet.add(asset);
-        }
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.content_workorder_list);
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this,assetSet));
+        adapter=new SimpleItemRecyclerViewAdapter(this);
+        recyclerView.setAdapter(adapter);
 
     }
 
     private void setUp(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -88,7 +87,7 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.default_menu, menu);
+        getMenuInflater().inflate(R.menu.workorder_menu, menu);
         return true;
     }
 
@@ -100,9 +99,16 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_add) {
+            Log.d("onOptionsItemSelected","action_add");
+        }else if(id==R.id.action_download){
+            DownLoadAsyncTask downloadAsyncTask = new DownLoadAsyncTask(this);
+            downloadAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        }else if(id==R.id.action_upload){
+//            UploadAsyncTask uploadAsyncTask = new UploadAsyncTask(this);
+//            uploadAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -113,14 +119,17 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_asset) {
-            // Handle the camera action
-        } else if (id == R.id.nav_workorder) {
-            
-        } else if (id == R.id.nav_share) {
+        if (id == R.id.nav_workorder) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_asset) {
+            Intent intent = new Intent(this, AssetListActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_location) {
+            Intent intent = new Intent(this, LocationListActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_setting) {
+            Intent intent = new Intent(this, SettingActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -132,15 +141,46 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
     public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
 
-        List<Map<String, Object>> assetSet;
-        Map<String, Object> currentAsset;
+        public void setDataSet(){
+            SQLiteDatabase database=context.openOrCreateDatabase(context.getString(R.string.database_name), Context.MODE_PRIVATE,null);
+            Cursor cursor=database.rawQuery("select wonum,siteid,description,assetnum from workorder", null);
+
+            this.dataSet = new ArrayList<Map<String,Object>>();
+
+            while(cursor.moveToNext()){
+                Map<String,Object> asset = new HashMap<String,Object>();
+                asset.put("wonum",cursor.getString(0));
+                asset.put("siteid",cursor.getString(1));
+                asset.put("description",cursor.getString(2));
+                asset.put("assetnum",cursor.getString(3));
+
+                dataSet.add(asset);
+            }
+        }
+
+        List<Map<String, Object>> dataSet;
+
         Context context;
 
 
-        public SimpleItemRecyclerViewAdapter(Context context, List<Map<String, Object>> assetSet) {
-            this.assetSet = assetSet;
+        public SimpleItemRecyclerViewAdapter(Context context) {
+            Log.d("SimpleItem","SimpleItemRecyclerViewAdapter");
             this.context = context;
+            setDataSet();
+
+
+//            for(int i =1;i<101;i++){
+//                Map<String,Object> asset = new HashMap<String,Object>();
+//                asset.put("wonum","WOTEST00"+i);
+//                asset.put("description","테스트 작업오더"+i);
+//                asset.put("assetnum","ASSET00"+i);
+//                asset.put("siteid","BEDFORD");
+//                dataSet.add(asset);
+//            }
         }
+
+
+
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -150,12 +190,13 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            currentAsset = assetSet.get(position);
-
+            Map<String, Object> currentAsset = dataSet.get(position);
+            holder.wonum.setText((String) currentAsset.get("wonum"));
             holder.assetnum.setText((String) currentAsset.get("assetnum"));
-            holder.description.setText((String) currentAsset.get("description"));
-            holder.location.setText((String) currentAsset.get("location"));
             holder.siteid.setText((String) currentAsset.get("siteid"));
+            holder.description.setText((String) currentAsset.get("description"));
+
+
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,18 +204,20 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
                     Context context = v.getContext();
 
                     Intent intent = new Intent(context, WorkorderActivity.class);
-                    intent.putExtra("assetnum", (String) currentAsset.get("assetnum"));
-                    intent.putExtra("description", (String) currentAsset.get("description"));
-                    intent.putExtra("location", (String) currentAsset.get("location"));
-                    intent.putExtra("siteid", (String) currentAsset.get("siteid"));
+                    intent.putExtra("assetnum", holder.assetnum.getText().toString());
+                    intent.putExtra("description", holder.description.getText().toString());
+                    intent.putExtra("wonum", holder.wonum.getText().toString());
+                    intent.putExtra("siteid", holder.siteid.getText().toString());
                     context.startActivity(intent);
                 }
             });
         }
 
+
+
         @Override
         public int getItemCount() {
-            return assetSet.size();
+            return dataSet.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -182,16 +225,17 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
             public final View mView;
             public final TextView assetnum;
             public final TextView description;
-            public final TextView location;
+            public final TextView wonum;
             public final TextView siteid;
 
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
+                wonum = (TextView) view.findViewById(R.id.wonum);
                 assetnum = (TextView) view.findViewById(R.id.assetnum);
                 description = (TextView) view.findViewById(R.id.description);
-                location = (TextView) view.findViewById(R.id.location);
+
                 siteid = (TextView) view.findViewById(R.id.siteid);
             }
 

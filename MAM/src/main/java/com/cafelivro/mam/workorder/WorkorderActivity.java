@@ -27,24 +27,29 @@ public class WorkorderActivity extends AppCompatActivity {
 
 
         Intent intent=getIntent();
+        String wonum=intent.getStringExtra("wonum");
+        String siteid=intent.getStringExtra("siteid");
         String assetnum=intent.getStringExtra("assetnum");
         String description=intent.getStringExtra("description");
-        String location=intent.getStringExtra("location");
-        String siteid=intent.getStringExtra("siteid");
+
+
         TextView tvAssetnum=(TextView)findViewById(R.id.assetnum);
         TextView tvDescription=(TextView)findViewById(R.id.description);
-        TextView tvLocation=(TextView)findViewById(R.id.location);
+        TextView tvWonum=(TextView)findViewById(R.id.wonum);
         TextView tvSiteid=(TextView)findViewById(R.id.siteid);
         tvAssetnum.setText(assetnum);
         tvDescription.setText(description);
-        tvLocation.setText(location);
+        tvWonum.setText(wonum);
         tvSiteid.setText(siteid);
 
     }
 
 
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     private void setUp(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -71,6 +76,7 @@ public class WorkorderActivity extends AppCompatActivity {
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
             navigateUpTo(new Intent(this, WorkorderListActivity.class));
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
