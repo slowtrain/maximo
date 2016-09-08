@@ -1,14 +1,11 @@
 package com.cafelivro.mam.setting;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.cafelivro.mam.R;
-import com.cafelivro.mam.asset.AssetListActivity;
-import com.cafelivro.mam.workorder.WorkorderActivity;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -34,6 +31,7 @@ public class SettingActivity extends AppCompatActivity {
             //
             super.onBackPressed();
             finish();
+            overridePendingTransition(0,0);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -42,5 +40,7 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
+        overridePendingTransition(0,0);
     }
 }

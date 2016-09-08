@@ -4,14 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cafelivro.mam.R;
+import com.cafelivro.mam.util.Utils;
 
 public class AssetActivity extends AppCompatActivity {
 
@@ -40,6 +43,11 @@ public class AssetActivity extends AppCompatActivity {
         tvLocation.setText(location);
         tvSiteid.setText(siteid);
 
+
+        // animation effect
+        RelativeLayout view = (RelativeLayout)findViewById(R.id.content_asset);
+        ViewCompat.setTransitionName(view, Utils.TRANSITION_NAME);
+
     }
 
 
@@ -47,6 +55,7 @@ public class AssetActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+        overridePendingTransition(0,0);
     }
 
     private void setUp(){
@@ -75,6 +84,7 @@ public class AssetActivity extends AppCompatActivity {
             //
             navigateUpTo(new Intent(this, AssetListActivity.class));
             finish();
+            overridePendingTransition(0,0);
             return true;
         }
         return super.onOptionsItemSelected(item);

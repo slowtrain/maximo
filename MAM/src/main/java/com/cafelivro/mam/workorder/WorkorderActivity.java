@@ -4,16 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cafelivro.mam.R;
+import com.cafelivro.mam.util.Utils;
 
 public class WorkorderActivity extends AppCompatActivity {
+
+    public static final String PATH = "path";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,14 @@ public class WorkorderActivity extends AppCompatActivity {
         tvWonum.setText(wonum);
         tvSiteid.setText(siteid);
 
+
+
+        //animation effect
+        RelativeLayout view = (RelativeLayout) findViewById(R.id.content_workorder);
+        ViewCompat.setTransitionName(view, Utils.TRANSITION_NAME);
+
+
+
     }
 
 
@@ -49,6 +63,7 @@ public class WorkorderActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+        overridePendingTransition(0,0);
     }
 
     private void setUp(){
@@ -77,6 +92,7 @@ public class WorkorderActivity extends AppCompatActivity {
             //
             navigateUpTo(new Intent(this, WorkorderListActivity.class));
             finish();
+            overridePendingTransition(0,0);
             return true;
         }
         return super.onOptionsItemSelected(item);

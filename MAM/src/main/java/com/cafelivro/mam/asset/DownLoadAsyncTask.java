@@ -1,9 +1,7 @@
 package com.cafelivro.mam.asset;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -13,7 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.cafelivro.mam.R;
-import com.cafelivro.mam.workorder.WorkorderListActivity;
+import com.cafelivro.mam.util.AsyncTaskConstants;
+import com.cafelivro.mam.util.CommonValidator;
 import com.cafelivro.oslc.MaximoConnector;
 import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
@@ -22,9 +21,12 @@ import com.ibm.json.java.JSONObject;
  * Created by baeks on 9/4/2016.
  */
 
- class DownLoadAsyncTask extends AsyncTask<Void,String,Void>{
+ class DownLoadAsyncTask extends AsyncTask<String,String,Integer>{
+
+
     private AssetListActivity activity;
     private ProgressBar progressBar;
+
     public DownLoadAsyncTask(Context context) {
         this.activity=(AssetListActivity)context;
         this.progressBar=(ProgressBar)activity.findViewById(R.id.progressBar);
@@ -39,19 +41,25 @@ import com.ibm.json.java.JSONObject;
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected Integer doInBackground(String... args) {
 
-        SQLiteDatabase database=activity.openOrCreateDatabase(activity.getString(R.string.database_name), Context.MODE_PRIVATE,null);
+        MaximoConnector connector = new MaximoConnector(activity);
 
+        if(!CommonValidator.wifiOn(activity)){
+            return AsyncTaskConstants.RETURN_WIFI_FAIL;
+        }
 
+        if(connector.canConnect("oslcasset")==null){
+            return AsyncTaskConstants.RETURN_CONNECT_FAIL;
+        }
 
         String oslcWhere   = "oslc.where=spi:siteid=\"BEDFORD\"";
         String oslcSelect  = "oslc.select=spi:assetnum,spi:siteid,spi:description,spi:location";
 
-        MaximoConnector connector = new MaximoConnector(activity);
         JSONObject result=connector.query("oslcasset",oslcWhere,oslcSelect);
         JSONArray assetSet =(JSONArray)result.get("rdfs:member");
 
+        SQLiteDatabase database=activity.openOrCreateDatabase(activity.getString(R.string.database_name), Context.MODE_PRIVATE,null);
         database.execSQL("delete from asset");
         ContentValues values;
         for(int i=0;i<assetSet.size();i++){
@@ -90,8 +98,11 @@ import com.ibm.json.java.JSONObject;
         cursor.close();
         database.close();
 
-        return null;
+        return AsyncTaskConstants.RETURN_SUCCESS;
     }
+
+
+
 
 
     @Override
@@ -101,13 +112,23 @@ import com.ibm.json.java.JSONObject;
     }
 
     @Override
-    protected void onPostExecute(Void result) {
+    protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
-        progressBar.setVisibility(View.INVISIBLE);
-        activity.adapter.setDataSet();
-        activity.adapter.notifyDataSetChanged();
 
-        Toast.makeText(activity,"DOWNLOAD 가 완료 되었습니다.",Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.INVISIBLE);
+        if(result==AsyncTaskConstants.RETURN_SUCCESS){
+            activity.adapter.setDataSet();
+            activity.adapter.notifyDataSetChanged();
+            Toast.makeText(activity,"DOWNLOAD IS SUCCESS",Toast.LENGTH_SHORT).show();
+        }else if(result==AsyncTaskConstants.RETURN_WIFI_FAIL){
+            Toast.makeText(activity,"WIFI IS NOT CONNECTED",Toast.LENGTH_SHORT).show();
+        }else if(result==AsyncTaskConstants.RETURN_CONNECT_FAIL){
+            Toast.makeText(activity,"REQUEST IS WRONG",Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
 
     }
 

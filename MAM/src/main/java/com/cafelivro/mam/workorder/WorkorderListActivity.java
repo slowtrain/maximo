@@ -1,5 +1,6 @@
 package com.cafelivro.mam.workorder;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,12 +23,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cafelivro.mam.R;
 import com.cafelivro.mam.asset.AssetListActivity;
 import com.cafelivro.mam.location.LocationListActivity;
 import com.cafelivro.mam.setting.SettingActivity;
+import com.cafelivro.mam.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +40,7 @@ import java.util.Map;
 public class WorkorderListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    SimpleItemRecyclerViewAdapter adapter;
+    public SimpleItemRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,21 +166,15 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
 
         Context context;
 
+        LinearLayout woList;
+
 
         public SimpleItemRecyclerViewAdapter(Context context) {
             Log.d("SimpleItem","SimpleItemRecyclerViewAdapter");
             this.context = context;
+
             setDataSet();
 
-
-//            for(int i =1;i<101;i++){
-//                Map<String,Object> asset = new HashMap<String,Object>();
-//                asset.put("wonum","WOTEST00"+i);
-//                asset.put("description","테스트 작업오더"+i);
-//                asset.put("assetnum","ASSET00"+i);
-//                asset.put("siteid","BEDFORD");
-//                dataSet.add(asset);
-//            }
         }
 
 
@@ -184,7 +182,7 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_workorder, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.list_workorder, parent, false);
             return new ViewHolder(view);
         }
 
@@ -201,14 +199,17 @@ public class WorkorderListActivity extends AppCompatActivity implements Navigati
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Context context = v.getContext();
 
                     Intent intent = new Intent(context, WorkorderActivity.class);
                     intent.putExtra("assetnum", holder.assetnum.getText().toString());
                     intent.putExtra("description", holder.description.getText().toString());
                     intent.putExtra("wonum", holder.wonum.getText().toString());
                     intent.putExtra("siteid", holder.siteid.getText().toString());
-                    context.startActivity(intent);
+
+                    Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)v.getContext(),v, Utils.TRANSITION_NAME).toBundle();
+                    v.getContext().startActivity(intent,bundle);
+
+                    //((Activity)context).overridePendingTransition(0,0);
                 }
             });
         }

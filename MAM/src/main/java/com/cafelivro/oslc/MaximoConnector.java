@@ -108,7 +108,65 @@ public class MaximoConnector {
 
         return con;
     }
+
+
     */
+
+
+    public JSONObject canConnect(String objectStructure){
+        JSONObject result=null;
+        String requestUri=basicUri+"/"+objectStructure;
+
+        try{
+            URL httpUrl = new URL(requestUri);
+            HttpURLConnection urlConnection = (HttpURLConnection)httpUrl.openConnection();
+
+            urlConnection.setRequestMethod(HTTP_METHOD_GET);
+            //urlConnection.setRequestProperty("accept", "application/json");
+            urlConnection.setRequestProperty("x-public-uri", basicUri);
+            urlConnection.setRequestProperty("MAXAUTH", maxauth);
+            urlConnection.setUseCaches(false);
+            urlConnection.setAllowUserInteraction(false);
+            urlConnection.setConnectTimeout(3000);
+            urlConnection.setReadTimeout(3000);
+
+            urlConnection.connect();
+
+            int responseCode = urlConnection.getResponseCode();
+            System.out.println("Query Request to URL : " + requestUri);
+            System.out.println("Response Code  : " + responseCode);
+            System.out.println("Response message  : " + urlConnection.getResponseMessage());
+
+
+
+            if(responseCode<400){
+                BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                StringBuffer response = new StringBuffer();
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                    response.append("\n");
+                }
+                in.close();
+                System.out.println("response body  : ");
+                System.out.println(response.toString());
+                result=JSONObject.parse(response.toString());
+            }
+
+
+        }catch(Exception e){
+            return null;
+        }
+
+
+
+
+        return result;
+    }
+
+
+
+
     public JSONObject query(String objectStructure) {
         return query(objectStructure, null);
     }

@@ -4,16 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cafelivro.mam.R;
-import com.cafelivro.mam.workorder.WorkorderListActivity;
+import com.cafelivro.mam.util.Utils;
 
 public class LocationActivity extends AppCompatActivity {
 
@@ -42,6 +44,10 @@ public class LocationActivity extends AppCompatActivity {
         tvSiteid.setText(siteid);
         tvDescription.setText(description);
 
+        // animation effect
+        RelativeLayout view = (RelativeLayout)findViewById(R.id.content_location);
+        ViewCompat.setTransitionName(view, Utils.TRANSITION_NAME);
+
 
     }
 
@@ -50,6 +56,7 @@ public class LocationActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+        overridePendingTransition(0,0);
     }
 
     private void setUp(){
@@ -78,6 +85,7 @@ public class LocationActivity extends AppCompatActivity {
             //
             navigateUpTo(new Intent(this, LocationListActivity.class));
             finish();
+            overridePendingTransition(0,0);
             return true;
         }
         return super.onOptionsItemSelected(item);

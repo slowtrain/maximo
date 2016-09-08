@@ -33,15 +33,15 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
+    <string name="permission_rationale">
+        "Contacts permissions are needed for providing email completions."
     </string>
     <string name="title_activity_asset">ASSET</string>
     <string name="title_activity_workorder">WORKORDER</string>
     <string name="title_activity_location">LOCATION</string>
 
     <string name="maximo_protocol">http</string>
-    <string name="maximo_url">192.168.0.38</string>
+    <string name="maximo_url">192.168.0.70</string>
     <string name="maximo_port">7001</string>
     <string name="maximo_user">maxadmin</string>
     <string name="maximo_password">maxadmin</string>

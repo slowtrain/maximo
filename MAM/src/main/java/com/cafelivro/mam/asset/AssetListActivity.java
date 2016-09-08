@@ -1,5 +1,6 @@
 package com.cafelivro.mam.asset;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,25 +8,27 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cafelivro.mam.R;
 import com.cafelivro.mam.location.LocationListActivity;
 import com.cafelivro.mam.setting.SettingActivity;
-import com.cafelivro.mam.workorder.*;
+import com.cafelivro.mam.util.Utils;
+import com.cafelivro.mam.workorder.WorkorderListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,6 +102,7 @@ public class AssetListActivity extends AppCompatActivity implements NavigationVi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_download) {
+
             DownLoadAsyncTask downloadAsyncTask = new DownLoadAsyncTask(this);
             downloadAsyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
             return true;
@@ -106,6 +110,12 @@ public class AssetListActivity extends AppCompatActivity implements NavigationVi
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -116,14 +126,17 @@ public class AssetListActivity extends AppCompatActivity implements NavigationVi
         if (id == R.id.nav_workorder) {
             Intent intent = new Intent(this, WorkorderListActivity.class);
             startActivity(intent);
+            overridePendingTransition(0,0);
         } else if (id == R.id.nav_asset) {
 
         } else if (id == R.id.nav_location) {
             Intent intent = new Intent(this, LocationListActivity.class);
             startActivity(intent);
+            overridePendingTransition(0,0);
         } else if (id == R.id.nav_setting) {
             Intent intent = new Intent(this, SettingActivity.class);
             startActivity(intent);
+            overridePendingTransition(0,0);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -188,7 +201,10 @@ public class AssetListActivity extends AppCompatActivity implements NavigationVi
                     intent.putExtra("description", holder.description.getText().toString());
                     intent.putExtra("location", holder.location.getText().toString());
                     intent.putExtra("siteid", holder.siteid.getText().toString());
-                    context.startActivity(intent);
+
+                    Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)v.getContext(),v, Utils.TRANSITION_NAME).toBundle();
+                    v.getContext().startActivity(intent,bundle);
+                    //((Activity)context).overridePendingTransition(0,0);
                 }
             });
         }

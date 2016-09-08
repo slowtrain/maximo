@@ -1,5 +1,6 @@
 package com.cafelivro.mam.location;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,9 +25,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cafelivro.mam.R;
-import com.cafelivro.mam.asset.*;
+import com.cafelivro.mam.asset.AssetListActivity;
 import com.cafelivro.mam.setting.SettingActivity;
-import com.cafelivro.mam.workorder.WorkorderActivity;
+import com.cafelivro.mam.util.Utils;
 import com.cafelivro.mam.workorder.WorkorderListActivity;
 
 import java.util.ArrayList;
@@ -118,14 +120,17 @@ public class LocationListActivity extends AppCompatActivity implements Navigatio
         if (id == R.id.nav_workorder) {
             Intent intent = new Intent(this, WorkorderListActivity.class);
             startActivity(intent);
+            overridePendingTransition(0,0);
         } else if (id == R.id.nav_asset) {
             Intent intent = new Intent(this, AssetListActivity.class);
             startActivity(intent);
+            overridePendingTransition(0,0);
         } else if (id == R.id.nav_location) {
 
         } else if (id == R.id.nav_setting) {
             Intent intent = new Intent(this, SettingActivity.class);
             startActivity(intent);
+            overridePendingTransition(0,0);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -181,14 +186,16 @@ public class LocationListActivity extends AppCompatActivity implements Navigatio
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Context context = v.getContext();
+
 
                     Intent intent = new Intent(context, LocationActivity.class);
                     intent.putExtra("location", holder.location.getText().toString());
                     intent.putExtra("siteid", holder.siteid.getText().toString());
                     intent.putExtra("description", holder.description.getText().toString());
 
-                    context.startActivity(intent);
+                    Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)v.getContext(),v, Utils.TRANSITION_NAME).toBundle();
+                    v.getContext().startActivity(intent,bundle);
+                    //((Activity)context).overridePendingTransition(0,0);
                 }
             });
         }
