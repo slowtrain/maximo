@@ -56,10 +56,12 @@ SNO(Single Node OpenShift)는 컨트롤 플레인과 워커 역할을 단일 노
 
 ## 3. 서버 사양
 
-| 구분 | CPU | RAM | 디스크 | 비고 |
-|------|-----|-----|--------|------|
-| Bastion | 4 core 이상 | 8 GB 이상 | 온라인 100 GB 이상 / 오프라인 1 TB 이상 | Docker 또는 Podman, oc CLI, MAS CLI 실행 |
-| SNO 노드 | 16 core 이상 | 64 GB 이상 | OS 300 GB + 데이터 500 GB 이상 | 128 GB RAM 권장 |
+| 구분 | OS / 상태 | CPU | RAM | 디스크 | 비고 |
+|------|-----------|-----|-----|--------|------|
+| Bastion | RHEL 9.x 권장 | 4 core 이상 | 8 GB 이상 | 온라인 100 GB 이상 / 오프라인 1 TB 이상 | Docker 또는 Podman, oc CLI, MAS CLI 실행 |
+| SNO 노드 | OS 미설치 VM 또는 물리 서버 | 16 core 이상 | 64 GB 이상 | OS 300 GB + 데이터 500 GB 이상 | Discovery ISO / Agent ISO로 RHCOS와 OpenShift 설치 |
+
+Bastion은 설치 작업 서버이므로 RHEL 계열을 권장합니다. SNO 노드는 사전에 RHEL을 설치하는 서버가 아니라, 빈 VM 또는 물리 서버를 ISO로 부팅하여 RHCOS(Red Hat CoreOS)와 OpenShift를 설치하는 대상입니다.
 
 > SNO는 HA 구성이 아닙니다. 운영 환경에서 장애 허용성이 필요하면 3노드 이상 OpenShift 구성을 검토해야 합니다.
 

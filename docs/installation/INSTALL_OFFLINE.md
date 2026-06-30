@@ -57,11 +57,15 @@
 
 ### 2.1 서버 구성
 
-| 구분      | 역할                                  | 최소 사양                                       |
-| --------- | ------------------------------------- | ----------------------------------------------- |
-| 인터넷 PC | 이미지 다운로드 및 파일시스템 저장    | Docker 또는 Podman, 여유 디스크 1 TB 이상       |
-| Bastion   | Mirror Registry, DNS, MAS CLI, oc CLI | 4 core / 16 GB RAM / 1 TB 이상                  |
-| SNO 노드  | OpenShift SNO                         | 16 core / 64 GB RAM / OS 300 GB + 데이터 500 GB |
+| 구분      | OS / 상태                   | 역할                                  | 최소 사양                                       |
+| --------- | --------------------------- | ------------------------------------- | ----------------------------------------------- |
+| 인터넷 PC | 인터넷 접속 가능한 작업 PC  | 이미지 다운로드 및 파일시스템 저장    | Docker 또는 Podman, 여유 디스크 1 TB 이상       |
+| Bastion   | RHEL 9.x 권장               | Mirror Registry, DNS, MAS CLI, oc CLI | 4 core / 16 GB RAM / 1 TB 이상                  |
+| SNO 노드  | OS 미설치 VM 또는 물리 서버 | OpenShift SNO                         | 16 core / 64 GB RAM / OS 300 GB + 데이터 500 GB |
+
+Bastion은 폐쇄망 내부에서 설치 도구, Mirror Registry, DNS, MAS CLI 컨테이너를 실행하는 운영 작업 서버입니다. 문서의 패키지 설치 예시는 RHEL 계열 기준이므로 RHEL 9.x 사용을 권장합니다.
+
+SNO 노드는 사전에 RHEL 같은 일반 OS를 설치하지 않습니다. Agent-based installer ISO 또는 Discovery ISO로 부팅하면 설치 과정에서 RHCOS(Red Hat CoreOS)와 OpenShift가 노드에 설치됩니다. VM인 경우에도 빈 VM을 만들고 ISO를 CD-ROM으로 연결해 부팅합니다.
 
 ### 2.2 인터넷 PC에서 확보할 파일
 

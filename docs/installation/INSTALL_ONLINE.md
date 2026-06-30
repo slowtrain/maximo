@@ -47,12 +47,16 @@
 
 ### 2.1 서버 구성
 
-| 구분 | 역할 | 최소 사양 |
-|------|------|-----------|
-| Bastion | ISO 생성, MAS CLI, oc CLI, DNS | 4 core / 8 GB RAM / 100 GB |
-| SNO 노드 | OCP 컨트롤 플레인 + 워커 통합 | 16 core / 64 GB RAM / OS 300 GB + 데이터 500 GB |
+| 구분 | OS / 상태 | 역할 | 최소 사양 |
+|------|-----------|------|-----------|
+| Bastion | RHEL 9.x 권장 | ISO 생성, MAS CLI, oc CLI, DNS | 4 core / 8 GB RAM / 100 GB |
+| SNO 노드 | OS 미설치 VM 또는 물리 서버 | OCP 컨트롤 플레인 + 워커 통합 | 16 core / 64 GB RAM / OS 300 GB + 데이터 500 GB |
 
-SNO 노드는 디스크 2개 구성을 권장합니다. 첫 번째 디스크는 OS와 OpenShift용, 두 번째 디스크는 LVM Storage용으로 사용합니다.
+Bastion은 설치 도구와 컨테이너 런타임을 안정적으로 사용하기 위해 RHEL 계열을 권장합니다. 현장 표준이 있으면 RHEL 8/9 또는 호환 배포판을 사용할 수 있지만, 패키지 설치 명령은 OS에 맞게 조정해야 합니다.
+
+SNO 노드는 사전에 RHEL 같은 일반 OS를 설치하지 않습니다. Assisted Installer에서 생성한 Discovery ISO로 부팅하면 설치 과정에서 RHCOS(Red Hat CoreOS)와 OpenShift가 노드에 설치됩니다. VM으로 구성하는 경우에도 “빈 VM + ISO 부팅” 형태로 준비합니다.
+
+SNO 노드는 디스크 2개 구성을 권장합니다. 첫 번째 디스크는 RHCOS/OpenShift용, 두 번째 디스크는 LVM Storage용으로 사용합니다.
 
 ### 2.2 필수 파일
 
